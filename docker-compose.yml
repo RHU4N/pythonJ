@@ -1,17 +1,16 @@
 version: '3.8'
 
-services:
 jenkins:
-  image: jenkins/jenkins:lts
+  build: ./jenkins-docker
   user: root
-  password: 12345
   ports:
     - "8080:8080"
   volumes:
     - jenkins_home:/var/jenkins_home
     - /var/run/docker.sock:/var/run/docker.sock
-  networks:
-    - app-net
+    
+services:
+
 
   app:
     build: ./app
