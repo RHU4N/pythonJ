@@ -19,8 +19,9 @@ jenkins:
     networks:
       - app-net
 
+
 volumes:
-  jenkins_home:
+  - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   app-net:
