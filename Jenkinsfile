@@ -6,7 +6,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Iniciando Build...'
-                sh 'docker build -t jenkins:latest ./app'
+                sh 'docker build -t myapp:latest ./app'
             }
         }
        
