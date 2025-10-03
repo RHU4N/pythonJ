@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
 jenkins:
-  build: ./jenkins-docker
+  image: jenkins/jenkins:lts
   user: root
   ports:
     - "8080:8080"
