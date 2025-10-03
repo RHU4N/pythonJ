@@ -1,29 +1,42 @@
+
 pipeline {
     agent any
+   
     stages {
         stage('Build') {
             steps {
-                script {
-                    sh 'docker-compose -f docker-compose.yml build'
-                }
+                echo 'Iniciando Build...'
+                sh 'docker build -t myapp:latest ./app'
             }
         }
+       
         stage('Test') {
             steps {
-                script {
-                    docker.image('python:3.9-slim').inside {
-                        sh 'pip install -r app/requirements.txt'
-                        sh 'python app/test_app.py'
-                    }
-                }
+                echo 'Executando Testes...'
+                sh '''
+                    docker run --rm myapp:latest python test_app.py
+                '''
             }
         }
+       
         stage('Deploy') {
             steps {
-                script {
-                    sh 'docker-compose -f docker-compose.yml up -d'
-                }
+                echo 'Realizando Deploy...'
+                sh '''
+                    docker stop myapp || true
+                    docker rm myapp || true
+                    docker run -d --name myapp -p 80:80 myapp:latest
+                '''
             }
+        }
+    }
+   
+    post {
+        success {
+            echo '✅ Pipeline executado com sucesso!'
+        }
+        failure {
+            echo '❌ Pipeline falhou!'
         }
     }
 }
